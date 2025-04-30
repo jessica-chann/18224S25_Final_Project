@@ -212,7 +212,7 @@ module my_chip (
     assign game_over_led = game_over || time_over;
     
     // Score counter
-    always_ff @(posedge clock or negedge rst_n) begin
+    always_ff @(posedge clk) begin
         if (~rst_n || clr) begin
             score <= 4'd0;
         end else if (incr_score) begin
@@ -226,7 +226,7 @@ module my_chip (
     logic [9:0] play_again_counter;
     logic play_again_ready;
     
-    always_ff @(posedge clock or negedge rst_n) begin
+    always_ff @(posedge clk) begin
         if (~rst_n) begin
             play_again_counter <= 10'd0;
             play_again_ready <= 1'b0;
