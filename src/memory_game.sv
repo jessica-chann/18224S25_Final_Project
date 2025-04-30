@@ -297,7 +297,7 @@ module shift_reg (
     output logic [74:0] data, reversed_data
 
 );
-    always @(posedge clk or negedge rst_n) begin
+    always_ff @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
             data <= 'b0;
             reversed_data <= 'b0;
