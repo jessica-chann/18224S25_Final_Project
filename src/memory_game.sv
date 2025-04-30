@@ -43,7 +43,7 @@ module classicMode (
 
     logic mode_selected, play;
 
-    always_ff @(posedge clk or negedge rst_n) begin
+    always_ff @(posedge clk) begin
         if (~rst_n || play_again) begin
             state <= INIT;
             mode_selected <= 0;
@@ -99,7 +99,7 @@ module timeChallengeMode ( // still need to add clock divider
     logic timer_done;  // Timer done signal to trigger state change
 
     // State transition on clock or reset
-    always_ff @(posedge clk or negedge rst_n) begin
+    always_ff @(posedge clk) begin
         if (~rst_n) begin
             state <= INIT;
             timer <= 0;
@@ -145,7 +145,7 @@ module reverseMode (
 
     enum logic [1:0] {INIT, PATTERN_GEN, WAIT, GAME_OVER} state, next_state;
 
-    always_ff @(posedge clk or negedge rst_n) begin
+    always_ff @(posedge clk) begin
         if (~rst_n) state <= INIT;
         else state <= next_state;
     end
@@ -185,7 +185,7 @@ module random_bit_generator (
     logic [31:0] lfsr_reg;
 
     // LFSR polynomial: x^32 + x^22 + x^2 + x^1 + 1 (maximal length)
-    always_ff @(posedge clk or negedge rst_n) begin
+    always_ff @(posedge clk) begin
         if (!rst_n) 
             lfsr_reg <= 32'hABCD1234; // Use a fixed seed value for synthesis
         else if (en)
@@ -207,7 +207,7 @@ module display_pattern (
 
     logic [15:0] counter;
 
-    always_ff @(posedge clk or negedge rst_n) begin
+    always_ff @(posedge clk) begin
         if (~rst_n || ~en) begin
             led <= 0;
             counter <= 0;
@@ -297,7 +297,7 @@ module shift_reg (
     output logic [74:0] data, reversed_data
 
 );
-    always_ff @(posedge clk or negedge rst_n) begin
+    always_ff @(posedge clk) begin
         if (!rst_n) begin
             data <= 'b0;
             reversed_data <= 'b0;
@@ -314,7 +314,7 @@ module counter (
     input  logic        clk, rst_n, en, clr, game_over,
     output logic [15:0] count
 );
-    always_ff @(posedge clk or negedge rst_n) begin
+    always_ff @(posedge clk) begin
         if (~rst_n || clr) count <= 1;
         else if (en) count <= count + 1;
         else if (game_over) count <= count - 1;
@@ -341,7 +341,7 @@ module input_handler (
 );
     logic [15:0] bit_counter;
 
-    always_ff @(posedge clk or negedge rst_n) begin
+    always_ff @(posedge clk) begin
       if (~rst_n || clr) begin
             user_guess      <= 'd0;
             bit_counter     <= 'd0;
