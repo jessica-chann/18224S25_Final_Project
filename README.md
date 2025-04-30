@@ -38,6 +38,8 @@ The Memory Game is a Simon Says–style interactive game. Players are presented 
 
 Internally, the game uses a combination of FSMs, LFSRs for pseudo-random pattern generation, shift registers for pattern storage, and comparators for input checking. User interaction is handled via buttons, and game feedback is provided through LEDs and a simple score display.
 
+Refer to docs/Memory_Game_Final_Progress_Report.pdf for full details.
+
 ## IO
 
 An IO table listing all of your inputs and outputs and their function, like the one below:
