@@ -55,7 +55,7 @@ An IO table listing all of your inputs and outputs and their function, like the 
 
 ## How to Test
 
-# After tapeout, you can test the design as follows:
+### After tapeout, you can test the design as follows:
 1. Power the chip and connect the required buttons and LEDs:
 - Connect 8 button for input.
 - Use an external controller to toggle start.
