@@ -32,28 +32,26 @@
 
 5. Feel free to edit this file and include some basic information about your project (short description, inputs and outputs, diagrams, how to run, etc). An outline is provided below
 
-# Final Project Example Template
+## Memory Game
 
-This is an example outline you can modify and use in your final project submission. You are not required to use this exact template
+The Memory Game is a Simon Says–style interactive game. Players are presented with a sequence of LED flashes and must replicate the sequence using button inputs. The sequence grows longer with each round, and players can choose between three game modes: Classic, Reverse, and Time Challenge.
 
-## Project Name
-
-A short description of what your project does and how it works. Feel free to include images
+Internally, the game uses a combination of FSMs, LFSRs for pseudo-random pattern generation, shift registers for pattern storage, and comparators for input checking. User interaction is handled via buttons, and game feedback is provided through LEDs and a simple score display.
 
 ## IO
 
 An IO table listing all of your inputs and outputs and their function, like the one below:
 
 | Input/Output	| Description|																
-|-------------|--------------------------------------------------|
-| io_in[0]    | choose vga mode, when 0 640x480. When 1, 800x480 |
-| io_in[11:1] | unused                                           |
-| io_out[2:0] | Red channel                                      |
-| io_out[5:3] | Green channel                                    |
-| io_out[8:6] | Blue channel                                     |
-| io_out[9]   | HS, horizontal sync                              |
-| io_out[10]  | VS, vertical sync                                |
-| io_out[11]  | liveness check.  Toggles every couple of seconds |
+|---------------|----------------------------------------------------|
+| io_in[0]      | Start button to begin a new game                   |
+| io_in[1:8]    | 8 one-hot encoded pattern input buttons            |
+| io_in[8:10]   | 2-bit mode select: 00=Classic, 01=Time, 10=Reverse |
+| io_in[11]     | unused                                             |
+| io_out[0:7]   | Pattern output LEDs                                |
+| io_out[8]     | Game active status LED                             |
+| io_out[9]     | Game over status LED                               |
+| io_out[10:11] | Score display                                      |
 
 ## How to Test
 
