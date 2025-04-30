@@ -3,7 +3,7 @@ module gameModeSelect (
     input  logic  [1:0] sel,
     output logic        start_classic, start_time, start_reverse
 
-)
+);
     always_comb begin
         case (sel)
             00: begin
