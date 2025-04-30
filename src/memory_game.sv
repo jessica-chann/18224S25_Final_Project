@@ -4,19 +4,19 @@ module gameModeSelect (
     output logic        start_classic, start_time, start_reverse
 
 );
-    always_comb begin
+always_comb begin
         case (sel)
-            00: begin
+            2'd0: begin
                 start_classic = 1;
                 start_time = 0;
                 start_reverse = 0;
             end
-            01: begin
+            2'd1: begin
                 start_classic = 0;
                 start_time = 1;
                 start_reverse = 0;
             end
-            10: begin
+            2'd2: begin
                 start_classic = 0;
                 start_time = 0;
                 start_reverse = 1;
