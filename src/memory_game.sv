@@ -100,8 +100,13 @@ module timeChallengeMode ( // still need to add clock divider
 
     // State transition on clock or reset
     always_ff @(posedge clk or negedge rst_n) begin
-        if (~rst_n) state <= INIT;
-        else state <= next_state;
+        if (~rst_n) begin
+            state <= INIT;
+            timer <= 0;
+        end else begin
+            if (state == PATTERN_GEN) timer <= timer + 1;
+            state <= next_state;
+        end
     end
 
     // Next state logic
@@ -126,18 +131,7 @@ module timeChallengeMode ( // still need to add clock divider
     assign input_handler_en = (state == WAIT && next_state == WAIT);
     assign clr = (state == INIT || play_again == 1) ? 1 : 0;
     assign time_over = (next_state == TIME_OVER);
-
-    // Timer logic (internal timer)
-    always_ff @(posedge clk or negedge rst_n) begin
-        if (~rst_n) timer <= 0;
-        else if (state == PATTERN_GEN) timer <= timer + 1; // Increment timer when in PATTERN_GEN state
-    end
-
-    // Timer done signal when the timer reaches 60 seconds
-    always_comb begin
-        if (timer == 60) timer_done = 1; // Timer reached 60, signal time over
-        else timer_done = 0;
-    end
+    assign timer_done = (timer == 'd60) ? 1 : 0;
 
 endmodule : timeChallengeMode
 
