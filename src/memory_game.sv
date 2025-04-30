@@ -70,6 +70,7 @@ module classicMode (
                 else next_state = WAIT;
             end
             GAME_OVER: next_state = (play_again) ? INIT : GAME_OVER;
+            default: next_state = INIT;
         endcase
     end
 
@@ -115,6 +116,7 @@ module timeChallengeMode ( // still need to add clock divider
                 else next_state = WAIT;
             end
             TIME_OVER: next_state = (play_again) ? INIT : TIME_OVER;
+            default: next_state = INIT;
         endcase
     end
 
@@ -165,6 +167,7 @@ module reverseMode (
                 else next_state = WAIT;
             end
             GAME_OVER: next_state = (play_again) ? INIT : GAME_OVER;
+            default: next_state = INIT;
         endcase
     end
 
