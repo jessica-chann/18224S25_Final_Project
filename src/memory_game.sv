@@ -8,22 +8,22 @@ module gameModeSelect (
         case (sel)
             00: begin
                 start_classic = 1;
-                start_speed = 0;
+                start_time = 0;
                 start_reverse = 0;
             end
             01: begin
                 start_classic = 0;
-                start_speed = 1;
+                start_time = 1;
                 start_reverse = 0;
             end
             10: begin
                 start_classic = 0;
-                start_speed = 0;
+                start_time = 0;
                 start_reverse = 1;
             end
             default: begin
                 start_classic = 0;
-                start_speed = 0;
+                start_time = 0;
                 start_reverse = 0;
             end
         endcase
@@ -223,7 +223,7 @@ module display_pattern (
         if (~rst_n || ~en) begin
             led <= 0;
             counter <= 0;
-        end if (en && counter < count) begin
+        end else if (en && counter < count) begin
             counter <= counter + 3;
             if (pattern[counter] == 'd0) begin
                 led[0] <= 1;
@@ -234,7 +234,7 @@ module display_pattern (
                 led[5] <= 0;
                 led[6] <= 0;
                 led[7] <= 0;
-            end else if (patern[counter] == 'd1) begin
+            end else if (pattern[counter] == 'd1) begin
                 led[0] <= 0;
                 led[1] <= 1;
                 led[2] <= 0;
@@ -243,7 +243,7 @@ module display_pattern (
                 led[5] <= 0;
                 led[6] <= 0;
                 led[7] <= 0;
-            end else if (patern[counter] == 'd2) begin
+            end else if (pattern[counter] == 'd2) begin
                 led[0] <= 0;
                 led[1] <= 0;
                 led[2] <= 1;
@@ -252,7 +252,7 @@ module display_pattern (
                 led[5] <= 0;
                 led[6] <= 0;
                 led[7] <= 0;
-            end else if (patern[counter] == 'd3) begin
+            end else if (pattern[counter] == 'd3) begin
                 led[0] <= 0;
                 led[1] <= 0;
                 led[2] <= 0;
@@ -261,7 +261,7 @@ module display_pattern (
                 led[5] <= 0;
                 led[6] <= 0;
                 led[7] <= 0;
-            end else if (patern[counter] == 'd4) begin
+            end else if (pattern[counter] == 'd4) begin
                 led[0] <= 0;
                 led[1] <= 0;
                 led[2] <= 0;
@@ -270,7 +270,7 @@ module display_pattern (
                 led[5] <= 0;
                 led[6] <= 0;
                 led[7] <= 0;
-            end else if (patern[counter] == 'd5) begin
+            end else if (pattern[counter] == 'd5) begin
                 led[0] <= 0;
                 led[1] <= 0;
                 led[2] <= 0;
@@ -279,7 +279,7 @@ module display_pattern (
                 led[5] <= 1;
                 led[6] <= 0;
                 led[7] <= 0;
-            end else if (patern[counter] == 'd6) begin
+            end else if (pattern[counter] == 'd6) begin
                 led[0] <= 0;
                 led[1] <= 0;
                 led[2] <= 0;
@@ -288,7 +288,7 @@ module display_pattern (
                 led[5] <= 0;
                 led[6] <= 1;
                 led[7] <= 0;
-            end else if (patern[counter] == 'd7) begin
+            end else if (pattern[counter] == 'd7) begin
                 led[0] <= 0;
                 led[1] <= 0;
                 led[2] <= 0;
@@ -305,7 +305,7 @@ endmodule : display_pattern
 
 module shift_reg (
     input  logic        clk, rst_n, en, is_reverse,
-    input  logic [2:0]  in,
+    input  logic [2:0]  bit_in,
     output logic [74:0] data, reversed_data
 
 );
@@ -314,11 +314,11 @@ module shift_reg (
             data <= 'b0;
             reversed_data <= 'b0;
         end else if (en) begin
-            data <= {data[71:0], in};
-            if (is_reverse) reversed_data <= {in, data[71:0]}
+            data <= {data[71:0], bit_in};
+            if (is_reverse) reversed_data <= {bit_in, data[71:0]};
         end
 
-end
+    end
 endmodule : shift_reg
 
 
@@ -354,9 +354,9 @@ module input_handler (
     logic [15:0] bit_counter;
 
     always_ff @(posedge clk or negedge rst_n) begin
-      if (~rst_n && clr) begin
-            user_guess      <= 16'd0;
-            bit_counter     <= 16'd0;
+      if (~rst_n || clr) begin
+            user_guess      <= 'd0;
+            bit_counter     <= 'd0;
       end else if (en) begin
             if (bit_counter != count) begin
                 user_guess  <= {user_guess[71:0], in};
