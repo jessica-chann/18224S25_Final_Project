@@ -1,6 +1,6 @@
 module gameModeSelect (
     input  logic        rst_n,
-    input  logic        [1:0] sel,
+    input  logic  [1:0] sel,
     output logic        start_classic, start_time, start_reverse
 
 )
@@ -213,7 +213,7 @@ endmodule : random_bit_generator
 module display_pattern (
     input  logic        clk, rst_n, en,
     input  logic [15:0] count,
-    input  logic [31:0] pattern,
+    input  logic [74:0] pattern,
     output logic [7:0]  led
 )
 
@@ -224,7 +224,7 @@ module display_pattern (
             led <= 0;
             counter <= 0;
         end if (en && counter < count) begin
-            counter <= counter + 1;
+            counter <= counter + 3;
             if (pattern[counter] == 'd0) begin
                 led[0] <= 1;
                 led[1] <= 0;
@@ -304,15 +304,18 @@ endmodule : display_pattern
 
 
 module shift_reg (
-    input  logic        clk, rst_n, en, bit_in, is_reverse,
-    output logic [31:0] data
+    input  logic        clk, rst_n, en, is_reverse,
+    input  logic [2:0]  in,
+    output logic [74:0] data, reversed_data
 
 );
     always @(posedge clk or negedge rst_n) begin
-        if (!rst_n) data <= 32'b0;
-        else if (en) begin
-            if (!is_reverse) data <= {data[30:0], bit_in};
-            else if (is_reverse) data <= {bit_in, data[30:0]}
+        if (!rst_n) begin
+            data <= 'b0;
+            reversed_data <= 'b0;
+        end else if (en) begin
+            data <= {data[71:0], in};
+            if (is_reverse) reversed_data <= {in, data[71:0]}
         end
 
 end
@@ -333,7 +336,7 @@ endmodule : counter
 
 module comparator (
     input  logic        received_input,
-    input  logic [31:0] game_pattern, input_pattern,
+    input  logic [74:0] game_pattern, input_pattern,
     output logic        is_equal   
 );
     assign is_equal = (received_input && (game_pattern == input_pattern));
@@ -342,10 +345,11 @@ endmodule : comparator
 
 
 module input_handler (
-    input  logic        clk, rst_n, in, en, clr,
+    input  logic        clk, rst_n, en, clr,
+    input  logic [2:0]  in,
     input  logic [15:0] count,
     output logic        received_input,
-    output logic [31:0] user_guess
+    output logic [74:0] user_guess
 );
     logic [15:0] bit_counter;
 
@@ -355,12 +359,12 @@ module input_handler (
             bit_counter     <= 16'd0;
       end else if (en) begin
             if (bit_counter != count) begin
-                user_guess  <= {user_guess[30:0], in};
+                user_guess  <= {user_guess[71:0], in};
                 bit_counter <= bit_counter + 1;
             end
         end
     end
 
-    assign received_input = (count != 0 && bit_counter == count);
+    assign received_input = (count != 0 && bit_counter + 1 == count);
 
 endmodule : input_handler
