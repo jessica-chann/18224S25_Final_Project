@@ -296,7 +296,7 @@ endmodule : display_pattern
 
 module shift_reg (
     input  logic        clk, rst_n, en, is_reverse,
-    input  logic [2:0]  bit_in,
+    input  logic [2:0]  in,
     output logic [74:0] data, reversed_data
 
 );
@@ -305,8 +305,8 @@ module shift_reg (
             data <= 'b0;
             reversed_data <= 'b0;
         end else if (en) begin
-            data <= {data[71:0], bit_in};
-            if (is_reverse) reversed_data <= {bit_in, data[71:0]};
+            data <= {data[71:0], in};
+            if (is_reverse) reversed_data <= {in, data[71:0]};
         end
 
     end

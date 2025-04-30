@@ -80,8 +80,7 @@ module my_chip (
     shift_reg pattern_reg (
         .clk(clock),
         .rst_n(rst_n),
-        .en(gen_pattern),
-        .bit_in(random_number),  
+        .en(gen_pattern), 
         .in(random_number),         
         .is_reverse(start_reverse),
         .data(game_pattern),
