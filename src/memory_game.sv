@@ -187,24 +187,15 @@ module random_bit_generator (
 
     logic [31:0] lfsr_reg;
 
-    // Generate a random seed
-    function logic [31:0] get_random_seed();
-        bit [31:0] seed;
-        // Use SystemVerilog's random function to generate seed
-        if (!$value$plusargs("seed=%d", seed))
-            seed = $urandom; 
-        return seed;
-    endfunction
-
     // LFSR polynomial: x^32 + x^22 + x^2 + x^1 + 1 (maximal length)
     always_ff @(posedge clk or negedge rst_n) begin
         if (!rst_n) 
-            lfsr_reg <= get_random_seed();
+            lfsr_reg <= 32'hABCD1234; // Use a fixed seed value for synthesis
         else if (en)
             lfsr_reg <= {lfsr_reg[30:0], lfsr_reg[31] ^ lfsr_reg[21] ^ lfsr_reg[1] ^ lfsr_reg[0]};
     end
 
-    // Output the lower 3 bits of the LFSR for a number between 0 and 7
+    // Output the lower 3 bits of the LFSR for a number between 0 to 7
     assign random_number = lfsr_reg[2:0];
 
 endmodule : random_bit_generator
