@@ -215,7 +215,7 @@ module display_pattern (
     input  logic [15:0] count,
     input  logic [74:0] pattern,
     output logic [7:0]  led
-)
+);
 
     logic [15:0] counter;
 
