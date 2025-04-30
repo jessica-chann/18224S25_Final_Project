@@ -224,7 +224,7 @@ module display_pattern (
             led <= 0;
             counter <= 0;
         end else if (en && counter < count) begin
-            counter <= counter + 3;
+            counter <= counter + 'd3;
             if (pattern[counter] == 'd0) begin
                 led[0] <= 1;
                 led[1] <= 0;
