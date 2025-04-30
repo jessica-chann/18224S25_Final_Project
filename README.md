@@ -55,4 +55,24 @@ An IO table listing all of your inputs and outputs and their function, like the 
 
 ## How to Test
 
-A short description of how to test the design post-tapeout
+# After tapeout, you can test the design as follows:
+1. Power the chip and connect the required buttons and LEDs:
+- Connect 8 button for input.
+- Use an external controller to toggle start.
+- Use buttons to select a game mode.
+
+2. Start the game:
+- Set mode (Classic, Time Challenge, or Reverse).
+- Press the start button.
+
+3. Observe the pattern:
+- LEDs will flash in a generated sequence.
+- After the sequence, press buttons in the correct order.
+
+4. Score and status:
+- Score is shown.
+- Green lights while the game is active.
+- Red lights when the game ends (loss or timeout).
+
+5. Play again:
+- Wait for the replay window, then press start again to replay.
